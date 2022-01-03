@@ -5,10 +5,10 @@ class iNode:
 
 class File(iNode):
     def __init__(self,name):
-        self.conteudo=''
+        self.content=''
         super().__init__(name)
     
 class Folder(iNode):
     def __init__(self,name):
-        self.conteudo=[]
+        self.content=[]
         super().__init__(name)
