@@ -7,12 +7,12 @@ class iNode:
         self.name = None
         self.dataPointer = None   #qual data está apontando
         self.state = True #True = Livre
-        self.type = type
+        self.type = None
         self.next = None 
         self.prev = None
     
     def __str__(self):
-        return "blabla"
+        return self.id
 
 class File:
     def __init__(self, name):
@@ -31,3 +31,7 @@ class Directory:
         self.iNodes = []
         self.owner = "Arthur"  
         self.size = 0
+        self.parent = None
+    
+    def __str__(self):  # retorna uma string quando a classe é printada
+      return self.name

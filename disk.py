@@ -13,29 +13,33 @@ class VirtualDisk:
     def __init__(self,name):
         self.name = name
         self.diskOn = False
-        self.f = open(name,"wb")
+        self.f = open(name,"w+")
         
         if not self.size():
-            self.blocks = []
-            self.iNodesTable = []
+            self.blocks = [None]*31000
+            self.iNodesTable = [] 
             self.populateINodesTable()
         self.check()
 
-
     def end(self):
+        self.f.writelines(str(self.iNodesTable))
+        self.f.writelines('\n')
+        self.f.writelines(str(self.blocks))
         self.f.close()
 
     def populateINodesTable(self):
         for i in range(31000):
-            self.iNodesTable.append(node.iNode(i))
+            inode = node.iNode(i)
+            self.iNodesTable.append(inode)
+            print(str(inode))
         self.iNodesTable[0].name = "$"
         self.iNodesTable[0].type = "directory"
-        self.iNodesTable[0].    
+        self.iNodesTable[0].state = False
+        self.blocks[0] = node.Directory("$")
+        self.iNodesTable[0].dataPointer = 0
             
     def check(self):
         return os.path.exists(self.name)
         
-
     def size(self):
         return os.stat(self.name).st_size
-
