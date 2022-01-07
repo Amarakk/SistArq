@@ -2,13 +2,17 @@ from os import name
 import sys
 
 class iNode:
-    def __init__(self, id, type):
+    def __init__(self, id):
         self.id = id
+        self.name = None
         self.dataPointer = None   #qual data está apontando
         self.state = True #True = Livre
         self.type = type
         self.next = None 
         self.prev = None
+    
+    def __str__(self):
+        return "blabla"
 
 class File:
     def __init__(self, name):
@@ -16,8 +20,10 @@ class File:
         self.content=''
         self.owner = "Arthur"
         self.pages = 0
-        self.next = None
-        
+        self.next = None     
+    
+    def __str__(self):  # retorna uma string quando a classe é printada
+      return self.name
 
 class Directory:
     def __init__(self, name):
@@ -25,7 +31,3 @@ class Directory:
         self.iNodes = []
         self.owner = "Arthur"  
         self.size = 0
-
-
-print(sys.getsizeof("a"))
-print(sys.getsizeof("b"))

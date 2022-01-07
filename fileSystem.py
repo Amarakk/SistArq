@@ -1,46 +1,57 @@
+from os import name
 import node
-from main import disk
 
 # ['touch','ls','rm','echo','cat','cp','mv','mkdir','rmdir','cd']
-class fileSystem:
+# class fileSystem:
 
-    def __init__(self, disk):
-        pass
+#     def __init__(self, disk):
+#         pass
     
+#operações em directory
+
+def ls(Node, current):
+    pass
+
+def rmdir(iNode):
+    pass
+
+def mkdir(name,disk):
+    newNode = node.Directory(name)
+    disk
+
+def cd(Directory,current,next):
+    pass
+
+def mv(current,newName):
+    pass
+
+def cp(iNode):
+    mkdir()
+    pass
+
+#operações em File 
     
+def touch(fileName,disk): #create file || touch file
+    newNode = node.File(fileName)
+    print(newNode)
+    disk.blocks.append(newNode)
     
-    #operações em directory
-    
-    def ls(self,iNode, current):
-        pass
+    index = disk.blocks.index(newNode)
 
-    def rmdir(self,iNode):
-        pass
+    for i in disk.iNodesTable:
+        if i.state == True:
+            i.dataPointer = index
+            i.name = fileName
+            i.type = "file"
+        break
 
-    def mkdir(self,nome):
-        diretorio = node.Directory
-        diretorio.nome = nome
-    
-   
-    def cd(self,Directory,current,next):
-        pass
+def cat(fileName,content,): #write ||  cat content >> file
+    pass
 
-    def mv(self,current,newName):
-        pass
+def echo(fileName, disk): #print || echo fileName
+    iNode = next((x for x in disk.iNodeTable if x.name == fileName ), None)
+    pass
 
-    def cp(self,iNode):
-        pass
-
-    #operações em File 
-    #     
-    def touch(self,iNode): #create file || touch file
-        pass
-
-    def cat(self,iNode,content): #write ||  cat content >> file
-        pass
-    
-    def echo(self, iNode): #print || echo file
-        pass
-
-    def cp(self, baseINode, newINode):
-        pass
+def cp(baseINode, newINode):
+    touch()
+    pass
