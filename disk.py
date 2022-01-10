@@ -31,7 +31,7 @@ class VirtualDisk:
         for i in range(31000):
             inode = node.iNode(i)
             self.iNodesTable.append(inode)
-            print(str(inode))
+            
         self.iNodesTable[0].name = "$"
         self.iNodesTable[0].type = "directory"
         self.iNodesTable[0].state = False
