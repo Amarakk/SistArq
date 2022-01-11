@@ -17,10 +17,10 @@ def ls(current :node.Directory, disk):
     print("")
         
 
-def rmdir(fileName, currentDir : node.Directory, disk): #validar se esta vazio
+def rmdir(dirName, currentDir : node.Directory, disk): #validar se esta vazio
     inodes = currentDir.iNode
     for i in inodes:
-        if (currentDir.iNodesTable[i].name == remDir and disk.iNodesTable[i].size == 0):
+        if (currentDir.iNodesTable[i].name == dirName and disk.iNodesTable[i].size == 0):
             
             break
     pass
@@ -29,10 +29,9 @@ def mkdir(name, currDir,disk):
     newNode = node.Directory(name)
     newNode.parent = currDir
 
-    for j in range(31000):
+    for j in range(300):
         if disk.blocks[j] == None:
             disk.blocks[j] = newNode
-
             break
     
     index = disk.blocks.index(newNode)
@@ -50,6 +49,7 @@ def mkdir(name, currDir,disk):
 
 def cd(nextDir,currentDir,disk):
     if nextDir == '..':
+        print(currentDir.parent.name)
         objectDir = [item for item in disk.iNodesTable if item.name == currentDir.parent.name and item.type == "directory"]
         return (disk.blocks[objectDir[0].id], 0)
 
@@ -64,6 +64,7 @@ def mv(oldName, newName, currentDir : node.Directory, disk):#renomear
     
     for i in inodes:
         if (disk.iNodesTable[i].name == oldName and (disk.iNodesTable[i].type == "file" or disk.iNodesTable[i].type == "directory")):
+            disk.iNodesTable[i].name = newName
             disk.blocks[i].name = newName
             break
         
@@ -74,7 +75,7 @@ def mv(oldName, newName, currentDir : node.Directory, disk):#renomear
 def touch(fileName : str, currDir : node.Directory, disk): #create file || touch file
     newNode = node.File(fileName)
     
-    for j in range(31000):
+    for j in range(300):
         if disk.blocks[j] == None:
             disk.blocks[j] = newNode
 
@@ -135,9 +136,5 @@ def rm(fileName, currentDir : node.Directory, disk):   #remover arquivo
             disk.iNodesTable[i].next = None 
             disk.iNodesTable[i].prev = None
             disk.blocks[i] = None
-            currentDir.iNodes.pop(i)
+            currentDir.iNodes.remove(i)
             
-        
-
-    
-    

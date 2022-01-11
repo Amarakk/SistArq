@@ -1,3 +1,4 @@
+
 from ctypes import sizeof
 import os
 import sys
@@ -17,24 +18,35 @@ class VirtualDisk:
     def __init__(self,name):
         self.name = name
         self.diskOn = False
-        self.f = open(name,"r")
-        self.blocks = [None]*31000
-        self.iNodesTable = [] 
-        self.toObject()
+        if self.check():
+            self.diskOn = True
+            self.f = open(name,'r')
+            self.out = open(name+'_att', 'w+')
+        else:
+            self.f = open(name, 'w+')
 
         if not self.size():
-            self.blocks = [None]*31000
+            self.blocks = [None]*300
             self.iNodesTable = [] 
             self.populateINodesTable()
-        self.check()
+        else:
 
-    def end(self):
+            self.blocks = [None]*300
+            self.iNodesTable = [] 
+            self.toObject()
+
+    def endNew(self):
         self.f.writelines(self.toJSON())
         self.f.close()
+        
+    def endExisting(self):
+        self.out.writelines(self.toJSON())
+        self.f.close()
+        self.out.close()
 
     def populateINodesTable(self):
 
-        for i in range(31000):
+        for i in range(300):
             inode = node.iNode(i)
             self.iNodesTable.append(inode)
             
@@ -49,38 +61,39 @@ class VirtualDisk:
             sort_keys=True, indent=4)
 
     def toObject(self):
-        teste = open('j','w+')
+
         loadDisk = json.load(self.f)
         for i in loadDisk['iNodesTable']:
             init = node.iNode(**i)
             self.iNodesTable.append(init)
-        teste.writelines(str(self.iNodesTable))
-        
 
+        
+        count = 0
         for j in loadDisk['blocks']:
+
             # teste.writelines(str(j))
             # print(j['type'])
             # break
             try:
                 if j['type'] == "file":
-                    print("file aqui",j['content'])
                     init = node.File(**j)
-                    self.blocks.append(init)
+                    self.blocks[count] = init
+                
+
                 elif j['type'] == "directory":
-                    print('diretorio aqui')
                     init = node.Directory(**j)
-                    self.blocks.append(init)
+                    self.blocks[count] = init
                 print(str(init))
+                count += 1
             except:
-                pass
-      
-        teste.writelines(str(self.blocks))
+                self.blocks[count] = None
+                count +=1 
       
         
-        
-            
     def check(self):
+        print(os.path.exists(self.name))
         return os.path.exists(self.name)
         
     def size(self):
+        print(os.stat(self.name).st_size)
         return os.stat(self.name).st_size
