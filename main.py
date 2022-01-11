@@ -6,7 +6,7 @@ def main():
     disk1 = VirtualDisk("Disco 1")
     #inicia inodes
     #incia blocos
-    reserveWord = ['touch','ls','mkdir','cd','cat','echo','cp','rm','mv','rmdir',]
+    reserveWord = ['touch','ls','mkdir','cd','cat','echo','cp','rm','mv','rmdir','exit']
 
     x = True
 
@@ -43,8 +43,11 @@ def main():
 
             elif command[0] == reserveWord[6]:
                 fileSystem.cp(command[1], command[2], currentDir, disk1)
+            
+            elif command[0] == reserveWord[-1]:
+                disk1.end()
+                x = False
         else:
-            x = False
-            disk1.end()
+            print('Comando inválido')
 
 main()

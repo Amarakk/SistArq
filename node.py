@@ -1,37 +1,38 @@
 from os import name
 import sys
+from types import new_class
 
 class iNode:
-    def __init__(self, id):
+    def __init__(self, id, name = None, dataPointer = None, state = True, type = None, next = None, prev = None):
         self.id = id
-        self.name = None
-        self.dataPointer = None   #qual data está apontando
-        self.state = True #True = Livre
-        self.type = None
-        self.next = None 
-        self.prev = None
+        self.name = name
+        self.dataPointer = dataPointer   #qual data está apontando
+        self.state = state #True = Livre
+        self.type = type
+        self.next = next 
+        self.prev = prev
     
-    def __str__(self):
-        return self.id
+
 
 class File:
-    def __init__(self, name):
+    def __init__(self, name, content = '', owner = 'User', pages = 0, next = None, type = 'file'):
         self.name = name
-        self.content=''
-        self.owner = "Arthur"
-        self.pages = 0
-        self.next = None     
-    
+        self.content = content
+        self.owner = owner
+        self.pages = pages
+        self.next = next
+        self.type = type
+
     def __str__(self):  # retorna uma string quando a classe é printada
       return self.name
 
 class Directory:
-    def __init__(self, name):
+    def __init__(self, name, iNodes = [], owner = "User", size = 0, parent = None, type = 'directory'):
         self.name = name
-        self.iNodes = []
-        self.owner = "Arthur"  
-        self.size = 0
-        self.parent = None
-    
+        self.iNodes = iNodes
+        self.owner = owner  
+        self.size = size
+        self.parent = parent
+        self.type = type
     def __str__(self):  # retorna uma string quando a classe é printada
       return self.name

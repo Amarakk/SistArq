@@ -17,8 +17,12 @@ def ls(current :node.Directory, disk):
     print("")
         
 
-def rmdir(iNode, remDir): #validar se esta vaz
-    
+def rmdir(fileName, currentDir : node.Directory, disk): #validar se esta vazio
+    inodes = currentDir.iNode
+    for i in inodes:
+        if (currentDir.iNodesTable[i].name == remDir and disk.iNodesTable[i].size == 0):
+            
+            break
     pass
 
 def mkdir(name, currDir,disk):
@@ -55,8 +59,14 @@ def cd(nextDir,currentDir,disk):
             return (disk.blocks[i.id] , 1)
 
 
-def mv(current,newName):#renomear
-    pass
+def mv(oldName, newName, currentDir : node.Directory, disk):#renomear
+    inodes = currentDir.iNodes
+    
+    for i in inodes:
+        if (disk.iNodesTable[i].name == oldName and (disk.iNodesTable[i].type == "file" or disk.iNodesTable[i].type == "directory")):
+            disk.blocks[i].name = newName
+            break
+        
 
 
 #operações em File 
@@ -65,7 +75,6 @@ def touch(fileName : str, currDir : node.Directory, disk): #create file || touch
     newNode = node.File(fileName)
     
     for j in range(31000):
-
         if disk.blocks[j] == None:
             disk.blocks[j] = newNode
 
@@ -114,6 +123,21 @@ def cp(baseFile, newFile, currentDir : node.Directory, disk):
 
     disk.blocks[newNode].content = disk.blocks[oldNode].content
 
-def rm(fileName, currDir):
+def rm(fileName, currentDir : node.Directory, disk):   #remover arquivo
+    inodes = currentDir.iNodes
+    for i in inodes:
+        if (disk.iNodesTable[i].name == fileName and disk.iNodesTable[i].type == "file"):
+            
+            disk.iNodesTable[i].name = None
+            disk.iNodesTable[i].dataPointer = None   #qual data está apontando
+            disk.iNodesTable[i].state = True #True = Livre
+            disk.iNodesTable[i].type = None
+            disk.iNodesTable[i].next = None 
+            disk.iNodesTable[i].prev = None
+            disk.blocks[i] = None
+            currentDir.iNodes.pop(i)
+            
+        
+
     
-    pass
+    
