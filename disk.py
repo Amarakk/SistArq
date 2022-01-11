@@ -54,6 +54,7 @@ class VirtualDisk:
         self.iNodesTable[0].type = "directory"
         self.iNodesTable[0].state = False
         self.blocks[0] = node.Directory("$")
+        self.blocks[0].parent = 0
         self.iNodesTable[0].dataPointer = 0
 
     def toJSON(self):
@@ -71,9 +72,6 @@ class VirtualDisk:
         count = 0
         for j in loadDisk['blocks']:
 
-            # teste.writelines(str(j))
-            # print(j['type'])
-            # break
             try:
                 if j['type'] == "file":
                     init = node.File(**j)

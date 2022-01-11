@@ -21,13 +21,13 @@ def rmdir(dirName, currentDir : node.Directory, disk): #validar se esta vazio
     inodes = currentDir.iNode
     for i in inodes:
         if (currentDir.iNodesTable[i].name == dirName and disk.iNodesTable[i].size == 0):
-            
             break
     pass
 
 def mkdir(name, currDir,disk):
     newNode = node.Directory(name)
-    newNode.parent = currDir
+    
+    parent = [item for item in disk.iNodesTable if item.dataPointer == disk.blocks.index(currDir)]
 
     for j in range(300):
         if disk.blocks[j] == None:
@@ -35,7 +35,7 @@ def mkdir(name, currDir,disk):
             break
     
     index = disk.blocks.index(newNode)
-
+    newNode.iNodes = []
     for i in disk.iNodesTable:
         if i.state == True:
             i.dataPointer = index
@@ -43,14 +43,16 @@ def mkdir(name, currDir,disk):
             i.type = "directory"
             i.state = False
             currDir.iNodes.append(i.id)
+            newNode.parent = parent[0].id
+
             break
 
 
 
-def cd(nextDir,currentDir,disk):
+def cd(nextDir,currentDir : node.Directory ,disk):
     if nextDir == '..':
-        print(currentDir.parent.name)
-        objectDir = [item for item in disk.iNodesTable if item.name == currentDir.parent.name and item.type == "directory"]
+
+        objectDir = [item for item in disk.iNodesTable if item.id == currentDir.parent and item.type == "directory"]
         return (disk.blocks[objectDir[0].id], 0)
 
     objectDir = [item for item in disk.iNodesTable if item.name == nextDir and item.type == "directory"]
@@ -125,6 +127,7 @@ def cp(baseFile, newFile, currentDir : node.Directory, disk):
     disk.blocks[newNode].content = disk.blocks[oldNode].content
 
 def rm(fileName, currentDir : node.Directory, disk):   #remover arquivo
+    
     inodes = currentDir.iNodes
     for i in inodes:
         if (disk.iNodesTable[i].name == fileName and disk.iNodesTable[i].type == "file"):

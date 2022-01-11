@@ -26,7 +26,7 @@ def main():
             elif command[0] == reserveWord[2]:  #mdkir
                 fileSystem.mkdir(command[1],currentDir,disk1)
                 
-            elif command[0] == reserveWord[3]:
+            elif command[0] == reserveWord[3]:  #c
                 oldDir = currentDir.name
                 currentDir , direction = fileSystem.cd(command[1],currentDir,disk1)
                 if direction == 1:

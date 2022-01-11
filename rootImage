@@ -1,42 +1,16 @@
 {
     "blocks": [
         {
-            "iNodes": [
-                1,
-                2
-            ],
+            "iNodes": [],
             "name": "$",
             "owner": "User",
             "parent": 0,
             "size": 0,
             "type": "directory"
         },
-        {
-            "iNodes": [
-                3
-            ],
-            "name": "1",
-            "owner": "User",
-            "parent": 0,
-            "size": 0,
-            "type": "directory"
-        },
-        {
-            "iNodes": [],
-            "name": "dir3",
-            "owner": "User",
-            "parent": 0,
-            "size": 0,
-            "type": "directory"
-        },
-        {
-            "content": "",
-            "name": "b",
-            "next": null,
-            "owner": "User",
-            "pages": 0,
-            "type": "file"
-        },
+        null,
+        null,
+        null,
         null,
         null,
         null,
@@ -336,7 +310,7 @@
     ],
     "diskOn": true,
     "f": {
-        "mode": "r"
+        "mode": "r+"
     },
     "iNodesTable": [
         {
@@ -349,31 +323,31 @@
             "type": "directory"
         },
         {
-            "dataPointer": 1,
+            "dataPointer": null,
             "id": 1,
-            "name": "1",
+            "name": null,
             "next": null,
             "prev": null,
-            "state": false,
-            "type": "directory"
+            "state": true,
+            "type": null
         },
         {
-            "dataPointer": 2,
+            "dataPointer": null,
             "id": 2,
-            "name": "dir3",
+            "name": null,
             "next": null,
             "prev": null,
-            "state": false,
-            "type": "directory"
+            "state": true,
+            "type": null
         },
         {
-            "dataPointer": 3,
+            "dataPointer": null,
             "id": 3,
-            "name": "b",
+            "name": null,
             "next": null,
             "prev": null,
-            "state": false,
-            "type": "file"
+            "state": true,
+            "type": null
         },
         {
             "dataPointer": null,
