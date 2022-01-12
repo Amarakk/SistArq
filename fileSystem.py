@@ -108,12 +108,12 @@ def touch(fileName : str, currDir : node.Directory, disk): #create file || touch
 
 def cat(fileName, content, currentDir : node.Directory, disk): #write ||  cat content >> file
     inodes = currentDir.iNodes
-    objectFile = [item for item in disk.iNodesTable if item.id in currentDir.iNodes and item.name == fileName and item.type == "file"]
+    objectFile = [item for item in disk.iNodesTable if item.id in inodes and item.name == fileName and item.type == "file"]
     previous = objectFile[0]
      #acha o iNode dentro do diretório atual
     
     countBlock = 0
-    max = 10
+    max = 2
     if len(content) >= max:
         split_string = [content[i:i+max] for i in range(0, len(content), max)]
 
@@ -121,7 +121,6 @@ def cat(fileName, content, currentDir : node.Directory, disk): #write ||  cat co
         firstBlock.content = split_string[0]
         split_string.pop(0)
         for j in split_string: 
-        
             splitFile = node.File(None)
 
             for k in range(300):
@@ -138,22 +137,24 @@ def cat(fileName, content, currentDir : node.Directory, disk): #write ||  cat co
                     l.name = None
                     l.type = "file"
                     l.state = False
+                    freeInode = l
+
                     break
-            
+        
             if countBlock == 0:
-                print('dentro countBlock', l.id)
-                firstBlock.next = l.id
 
-            elif countBlock != 0:
-                print('fora countBlock', l.id)
-                disk.blocks[index].next = l.id
+                firstBlock.next = freeInode.id
+                nextBlock = disk.blocks[index]
+            else:
+  
+                nextBlock.next = freeInode.id
+                nextBlock = disk.blocks[index]
 
             
-            previous.next = l.id
-            previous = l
+            previous.next = freeInode.id
+            previous = freeInode
             splitFile.content = j
-            countBlock = 1
-            
+            countBlock += 1
 
 
     else: 
@@ -161,10 +162,15 @@ def cat(fileName, content, currentDir : node.Directory, disk): #write ||  cat co
 
 def echo(fileName, currentDir : node.Directory, disk): #print || echo fileName
     inodes = currentDir.iNodes
+
     for i in inodes:
         if (disk.iNodesTable[i].name == fileName and disk.iNodesTable[i].type == "file"):
-            print(disk.blocks[i].content)
-            break
+            contI = i
+            while contI:
+                print(disk.blocks[contI].content, end='')
+
+                contI = disk.blocks[contI].next
+            print('')
 
 def cp(baseFile, newFile, currentDir : node.Directory, disk):
     touch(newFile, currentDir, disk)
