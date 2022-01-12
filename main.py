@@ -6,7 +6,7 @@ def main():
     disk1 = VirtualDisk("Disco 1")
     #inicia inodes
     #incia blocos
-    reserveWord = ['touch','ls','mkdir','cd','cat','echo','cp','rm','mv','rmdir','exit']
+    reserveWord = ['touch','ls','mkdir','cd','echo','cat','cp','rm','mv','rmdir','exit']
 
     x = True
 
@@ -26,23 +26,31 @@ def main():
             elif command[0] == reserveWord[2]:  #mdkir
                 fileSystem.mkdir(command[1],currentDir,disk1)
                 
-            elif command[0] == reserveWord[3]:  #c
+            elif command[0] == reserveWord[3]:  #cd
                 oldDir = currentDir.name
-                currentDir , direction = fileSystem.cd(command[1],currentDir,disk1)
-                if direction == 1:
-                    atualPath += '/' + currentDir.name
-                else:
-                    atualPath = atualPath.translate({ord(i): None for i in "/"+oldDir})
+                try:
+                    currentDir , direction = fileSystem.cd(command[1],currentDir,disk1)
+                    
+                    if direction == 1:
+                        atualPath += '/' + currentDir.name
+                    else:
+                        atualPath = atualPath.translate({ord(i): None for i in "/"+oldDir})
+                except:
+                    print("Comando inválido")
 
-            elif command[0] == reserveWord[4]: #cat 'conteudo legal' >> filename
+            elif command[0] == reserveWord[4]: #echo 'conteudo legal' >> filename
                 content = command[1:-2]
                 strContent = ' '.join(content)
-                fileSystem.cat(command[-1],strContent, currentDir, disk1)
+                fileSystem.echo(command[-1],strContent, currentDir, disk1)
 
             elif command[0] == reserveWord[5]:
-                fileSystem.echo(command[1],currentDir,disk1)
-
+                try:
+                    var = fileSystem.cat(command[1],currentDir,disk1)
+                    print(var)
+                except:
+                    print("Comando inválido")
             elif command[0] == reserveWord[6]:
+
                 fileSystem.cp(command[1], command[2], currentDir, disk1)
 
             if command[0] == reserveWord[7]: # RM
